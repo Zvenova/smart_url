@@ -9,9 +9,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <#if user??>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/lm">Сократить</a>
                 </li>
+                </#if>
                 <#if isAdmin>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/user">Пользователи</a>
@@ -24,7 +26,7 @@
                 </#if>
             </ul>
             <div class="navbar_text mx-2">${name}</div>
-            <@login.logout />
+            <#if user??><@login.logout /></#if>
         </div>
     </div>
 </nav>
