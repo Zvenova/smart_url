@@ -1,7 +1,14 @@
 package com.zvenova.like_my.repository;
 
-import com.zvenova.like_my.domain.entity.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Long>  {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.zvenova.like_my.domain.entity.User;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    Optional<User> findByUsernameEquals(String username);
 }
