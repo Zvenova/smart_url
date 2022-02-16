@@ -1,6 +1,7 @@
 package com.zvenova.like_my.domain.entity;
 
 import com.zvenova.like_my.domain.security.Role;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,8 +15,18 @@ import java.util.Set;
 @Data
 @Table(name = "usr")
 @Entity
+@Builder
 @NoArgsConstructor
 public class User implements UserDetails {
+
+    public User(Long id, String username, String password, boolean active, Set<Role> role) {
+
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.active = active;
+        this.roles = role;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -2,6 +2,7 @@ package com.zvenova.like_my.base;
 
 
 import com.zvenova.like_my.repository.UserRepository;
+import com.zvenova.like_my.service.UserService;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,4 +22,7 @@ public class BaseTestWithoutDB {
 
     @MockBean
     public UserRepository userRepository;
+
+    @MockBean
+    public UserService userService;
 }
