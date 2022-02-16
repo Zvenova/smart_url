@@ -1,29 +1,42 @@
 package com.zvenova.like_my.service;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import javax.transaction.Transactional;
+
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.zvenova.like_my.domain.entity.User;
+import com.zvenova.like_my.exception.UserIsAlreadyPresentException;
 import com.zvenova.like_my.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private final UserRepository userRepository;
 
-    private final PasswordEncoder passwordEncoder;
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) {
 
         return userRepository.findByUsernameEquals(username)
                 .orElseThrow(() -> new UsernameNotFoundException(
                         String.format("User with name '%s' not found", username)));
+    }
+
+    public User saveUser(User user) throws UserIsAlreadyPresentException {
+
+        if (isUserPresent(user)) {
+            throw new UserIsAlreadyPresentException(user.getUsername());
+        }
+
+       return userRepository.save(user);
+    }
+
+    private boolean isUserPresent(User user) {
+
+        return userRepository.findByUsernameEquals(user.getUsername()).isPresent();
     }
 
 }
