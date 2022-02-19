@@ -1,4 +1,4 @@
-package com.zvenova.like_my.exception;
+package com.zvenova.like_my.exception.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

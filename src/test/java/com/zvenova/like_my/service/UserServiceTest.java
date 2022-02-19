@@ -1,24 +1,21 @@
 package com.zvenova.like_my.service;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import com.zvenova.like_my.base.BaseTestWithoutDB;
+import com.zvenova.like_my.domain.entity.User;
+import com.zvenova.like_my.domain.security.Role;
+import com.zvenova.like_my.exception.user.UserIsAlreadyPresentException;
+import com.zvenova.like_my.exception.user.UserDoesNotExistsException;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Collections;
 import java.util.Optional;
 
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import com.zvenova.like_my.base.BaseTestWithoutDB;
-import com.zvenova.like_my.domain.entity.User;
-import com.zvenova.like_my.domain.security.Role;
-import com.zvenova.like_my.exception.UserIsAlreadyPresentException;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class UserServiceTest extends BaseTestWithoutDB {
 
@@ -26,7 +23,7 @@ public class UserServiceTest extends BaseTestWithoutDB {
     private UserService userService;
 
     @Nested
-    public class TestFindUser {
+    public class TestFindUserByUsername {
 
         @Test
         public void whenUserNotPresent() {
@@ -77,9 +74,62 @@ public class UserServiceTest extends BaseTestWithoutDB {
         }
     }
 
+    @Nested
+    public class TestDeleteUser {
+
+        @Test
+        public void whenUserIsPresent() throws UserDoesNotExistsException {
+
+            User testUser = getTestUser();
+            doNothing().when(userRepository).deleteById(testUser.getId());
+            doReturn(true).when(userRepository).existsById(testUser.getId());
+
+            assertDoesNotThrow(() -> userService.deleteUser(testUser));
+            verify(userRepository, times(1)).deleteById(testUser.getId());
+            verify(userRepository, times(1)).existsById(testUser.getId());
+        }
+
+        @Test
+        public void whenUserNotPresent() {
+
+            User testUser = getTestUser();
+            doReturn(false).when(userRepository).existsById(testUser.getId());
+
+            assertThrows(UserDoesNotExistsException.class, () -> userService.deleteUser(testUser));
+            verify(userRepository, times(0)).deleteById(testUser.getId());
+            verify(userRepository, times(1)).existsById(testUser.getId());
+        }
+    }
+
+    @Nested
+    public class TestFindUserById {
+
+        @Test
+        public void whenUserIsPresent() throws UserDoesNotExistsException {
+
+            User testUser = getTestUser();
+            doReturn(Optional.of(testUser)).when(userRepository).findById(testUser.getId());
+
+            User userFromDB = userService.findById(testUser.getId());
+            assertEquals(testUser, userFromDB);
+            assertDoesNotThrow(() -> userService.findById(testUser.getId()));
+            verify(userRepository, times(2)).findById(testUser.getId());
+        }
+
+        @Test
+        public void whenUserNotPresent() {
+
+            User testUser = getTestUser();
+            doReturn(Optional.empty()).when(userRepository).findById(testUser.getId());
+
+            assertThrows(UserDoesNotExistsException.class, () -> userService.findById(testUser.getId()));
+            verify(userRepository, times(1)).findById(testUser.getId());
+        }
+    }
+
     private User getTestUser() {
 
-        return User.builder().username("Олег").active(true).password("123456")
+        return User.builder().id(2L).username("Олег").active(true).password("123456")
                 .roles(Collections.singleton(Role.USER)).build();
     }
 }

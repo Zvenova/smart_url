@@ -1,5 +1,6 @@
 package com.zvenova.like_my.base;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -20,7 +21,10 @@ public class TestContainersInit {
         DockerImageName myImage = DockerImageName.parse("postgres:14-alpine3.15")
                 .asCompatibleSubstituteFor("postgres");
         PostgreSQLContainer dbContainer = new PostgreSQLContainer(myImage);
-        dbContainer.withTmpFs(Map.of("/var/lib/postgresql/data", "rw"));
+        dbContainer.withTmpFs(new HashMap<String, String>() {{
+            put("/var/lib/postgresql/data", "rw");
+        }});
+//        dbContainer.withTmpFs(Map.of("/var/lib/postgresql/data", "rw"));
         dbContainer.withReuse(true);
         dbContainer.start();
 

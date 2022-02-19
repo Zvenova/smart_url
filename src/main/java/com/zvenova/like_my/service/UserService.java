@@ -2,11 +2,13 @@ package com.zvenova.like_my.service;
 
 import javax.transaction.Transactional;
 
+import com.zvenova.like_my.exception.user.UserDoesNotExistsException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.zvenova.like_my.domain.entity.User;
-import com.zvenova.like_my.exception.UserIsAlreadyPresentException;
+import com.zvenova.like_my.exception.user.UserIsAlreadyPresentException;
 import com.zvenova.like_my.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -27,16 +29,34 @@ public class UserService {
 
     public User saveUser(User user) throws UserIsAlreadyPresentException {
 
-        if (isUserPresent(user)) {
+        if (isUserPresentByUsername(user.getUsername())) {
             throw new UserIsAlreadyPresentException(user.getUsername());
         }
 
        return userRepository.save(user);
     }
 
-    private boolean isUserPresent(User user) {
+    public void deleteUser(User user) throws UserDoesNotExistsException {
 
-        return userRepository.findByUsernameEquals(user.getUsername()).isPresent();
+        if (!isUserPresentById(user.getId())) {
+            throw new UserDoesNotExistsException(user.getId());
+        }
+
+        userRepository.deleteById(user.getId());
     }
 
+    public User findById(Long id) throws UserDoesNotExistsException {
+
+        return userRepository.findById(id).orElseThrow(() -> new UserDoesNotExistsException(id));
+    }
+
+    private boolean isUserPresentByUsername(String username) {
+
+        return userRepository.findByUsernameEquals(username).isPresent();
+    }
+
+    private boolean isUserPresentById(Long id) {
+
+        return userRepository.existsById(id);
+    }
 }
