@@ -3,7 +3,6 @@ package com.zvenova.like_my.service;
 import javax.transaction.Transactional;
 
 import com.zvenova.like_my.exception.user.UserDoesNotExistsException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
