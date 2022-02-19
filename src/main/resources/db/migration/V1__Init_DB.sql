@@ -13,6 +13,13 @@ create table usr (
                      primary key (id)
 );
 
+create table links (
+                     id int8 not null,
+                     fullLink varchar(255) not null,
+                     smartLink varchar(255) not null,
+                     primary key (id)
+);
+
 alter table if exists user_role
     add constraint user_role_user_fk
     foreign key (user_id) references usr;
