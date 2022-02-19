@@ -1,5 +1,6 @@
 package com.zvenova.like_my.base;
 
+import com.zvenova.like_my.repository.LinkRepository;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
@@ -26,4 +27,6 @@ public class BaseTestWithoutDB {
     @MockBean
     public UserRepository userRepository;
 
+    @MockBean
+    public LinkRepository linkRepository;
 }

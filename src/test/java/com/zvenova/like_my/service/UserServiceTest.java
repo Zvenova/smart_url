@@ -8,7 +8,6 @@ import com.zvenova.like_my.exception.user.UserDoesNotExistsException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Collections;
