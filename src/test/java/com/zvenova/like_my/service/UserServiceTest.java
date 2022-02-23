@@ -3,15 +3,15 @@ package com.zvenova.like_my.service;
 import com.zvenova.like_my.base.BaseTestWithoutDB;
 import com.zvenova.like_my.domain.entity.User;
 import com.zvenova.like_my.domain.security.Role;
-import com.zvenova.like_my.exception.user.UserIsAlreadyPresentException;
 import com.zvenova.like_my.exception.user.UserDoesNotExistsException;
+import com.zvenova.like_my.exception.user.UserIsAlreadyPresentException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.Collections;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -129,6 +129,6 @@ public class UserServiceTest extends BaseTestWithoutDB {
     private User getTestUser() {
 
         return User.builder().id(2L).username("Олег").active(true).password("123456")
-                .roles(Collections.singleton(Role.USER)).build();
+                .roles(Set.of(Role.USER)).build();
     }
 }
