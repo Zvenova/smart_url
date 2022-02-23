@@ -51,7 +51,7 @@ public class UserService {
 
     private boolean isUserPresentByUsername(String username) {
 
-        return userRepository.findByUsernameEquals(username).isPresent();
+        return userRepository.existsByUsername(username);
     }
 
     private boolean isUserPresentById(Long id) {
