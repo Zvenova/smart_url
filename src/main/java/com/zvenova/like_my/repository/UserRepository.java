@@ -10,7 +10,6 @@ import com.zvenova.like_my.domain.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findByUsernameEquals(String username);
+    Optional<User> findByUsername(String username);
 
-    boolean existsByUsername(String username);
 }

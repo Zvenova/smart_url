@@ -9,9 +9,8 @@ import java.util.Optional;
 @Repository
 public interface LinkRepository extends JpaRepository<Link, Long> {
 
-    Optional<Link> findByFullLinkEquals(String username);
+    Optional<Link> findByFullLink(String fullLink);
 
-    Link findBySmartLinkEquals(String smartLink);
+    Optional<Link> findBySmartLink(String smartLink);
 
-    boolean existsBySmartLinkEquals(String smartLink);
 }
