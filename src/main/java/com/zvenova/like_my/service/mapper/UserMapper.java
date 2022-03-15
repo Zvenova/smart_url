@@ -6,7 +6,7 @@ import com.zvenova.like_my.domain.entity.User;
 import com.zvenova.like_my.domain.security.Role;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.util.Set;
 
 
 @Service
@@ -18,7 +18,7 @@ public class UserMapper {
 
         userForCreation.setUsername(createUserRequest.getUsername());
         userForCreation.setPassword(createUserRequest.getPassword());
-        userForCreation.setRoles(Collections.singleton(Role.USER));
+        userForCreation.setRoles(Set.of(Role.USER));
         userForCreation.setActive(true);
         return userForCreation;
     }
