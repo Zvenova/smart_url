@@ -11,15 +11,15 @@ import javax.transaction.Transactional;
 
 
 @Service
-@Transactional
+@Transactional  //TODO
 @RequiredArgsConstructor
 public class LinkService {
 
     private final LinkRepository linkRepository;
 
-    public Link loadLinkByFullLink(String fullLink) throws LinkDoesNotExistsException {
+    public Link findByFullLink(String fullLink) throws LinkDoesNotExistsException {
 
-        return linkRepository.findByFullLinkEquals(fullLink)
+        return linkRepository.findByFullLink(fullLink)
                 .orElseThrow(() -> new LinkDoesNotExistsException(fullLink));
     }
 
@@ -30,39 +30,34 @@ public class LinkService {
         return linkRepository.save(linkToSave);
     }
 
-    public void deleteLink(Link linkToDelete) throws LinkDoesNotExistsException {
+    public void deleteLink(Long idToDelete) throws LinkDoesNotExistsException {
 
-        if (!isLinkPresentById(linkToDelete.getId()))
-            throw new LinkDoesNotExistsException(linkToDelete.getFullLink());
+        if (!isLinkPresentById(idToDelete))
+            throw new LinkDoesNotExistsException(idToDelete.toString());
 
-        linkRepository.deleteById(linkToDelete.getId());
+        linkRepository.deleteById(idToDelete);
     }
 
     public Link findById(Long id) throws LinkDoesNotExistsException {
 
         return linkRepository.findById(id).orElseThrow(() ->
-                new LinkDoesNotExistsException(id.toString()));
+                new LinkDoesNotExistsException(String.format("Link with id %s is not exist", id)));
     }
 
-    public Link findLinkBySmartLink(Link link) throws LinkDoesNotExistsException {
+    public Link findBySmartLink(String smartLink) throws LinkDoesNotExistsException {
 
-        if (!isLinkPresentBySmartLink(link.getSmartLink()))
-            throw new LinkDoesNotExistsException(link.getFullLink());
-        return linkRepository.findBySmartLinkEquals(link.getSmartLink());
+        return linkRepository.findBySmartLink(smartLink).orElseThrow(
+                () -> new LinkDoesNotExistsException(smartLink)
+        );
     }
 
     private boolean isLinkPresentByFullLink(String fullLink) {
 
-        return linkRepository.findByFullLinkEquals(fullLink).isPresent();
+        return linkRepository.findByFullLink(fullLink).isPresent();
     }
 
     private boolean isLinkPresentById(Long id) {
 
         return linkRepository.existsById(id);
-    }
-
-    private boolean isLinkPresentBySmartLink(String smartLink) {
-
-        return linkRepository.existsBySmartLinkEquals(smartLink);
     }
 }
