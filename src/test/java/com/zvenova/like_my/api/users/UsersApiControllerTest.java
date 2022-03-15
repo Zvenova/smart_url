@@ -1,12 +1,12 @@
 package com.zvenova.like_my.api.users;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.zvenova.like_my.domain.entity.User;
 import com.zvenova.like_my.domain.security.Role;
+import com.zvenova.like_my.exception.request.FieldInRequestCannotBeEmpty;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -16,6 +16,7 @@ import com.zvenova.like_my.base.BaseApiTest;
 
 import lombok.SneakyThrows;
 
+import static org.junit.jupiter.api.Assertions.*;
 import java.util.Set;
 
 
@@ -40,6 +41,26 @@ class UsersApiControllerTest extends BaseApiTest {
                             .content(content))
                     .andExpect(status().isOk());
             verify(userRepository, times(1)).save(testUser);
+        }
+
+        @Test
+        @SneakyThrows
+        public void testUserCreate_usernameEmpty() {
+
+            User testUser = getTestUser();
+            testUser.setUsername("");
+            String content = new JSONObject()
+                    .put("username", testUser.getUsername())
+                    .put("password", testUser.getPassword())
+                    .toString();
+
+            mockMvc.perform(post("/api/users").contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .content(content))
+                    .andExpect(result -> assertTrue(result.getResolvedException() instanceof FieldInRequestCannotBeEmpty));
+            // TODO ExceptionHandler
+
+            verify(userRepository, times(0)).save(testUser);
         }
     }
 
