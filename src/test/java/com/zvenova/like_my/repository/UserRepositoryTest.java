@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collections;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +17,7 @@ class UserRepositoryTest extends BaseTestWithDB {
     @Test
     public void adminUserIsPresent() {
 
-        User admin = userRepository.findByUsernameEquals("admin").orElseThrow(AssertionError::new);
+        User admin = userRepository.findByUsername("admin").orElseThrow(AssertionError::new);
 
         assertTrue(admin.isActive());
 
