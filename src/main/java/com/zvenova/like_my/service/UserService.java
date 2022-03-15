@@ -19,9 +19,9 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User loadUserByUsername(String username) {
+    public User findByUsername(String username) {
 
-        return userRepository.findByUsernameEquals(username)
+        return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(
                         String.format("User with name '%s' not found", username)));
     }
@@ -31,6 +31,8 @@ public class UserService {
         if (isUserPresentByUsername(user.getUsername())) {
             throw new UserIsAlreadyPresentException(user.getUsername());
         }
+
+
 
        return userRepository.save(user);
     }
@@ -51,7 +53,7 @@ public class UserService {
 
     private boolean isUserPresentByUsername(String username) {
 
-        return userRepository.existsByUsername(username);
+        return userRepository.findByUsername(username).isPresent();
     }
 
     private boolean isUserPresentById(Long id) {

@@ -27,19 +27,19 @@ public class UserServiceTest extends BaseTestWithoutDB {
         @Test
         public void whenUserNotPresent() {
 
-            doReturn(Optional.empty()).when(userRepository).findByUsernameEquals("ADMIN");
+            doReturn(Optional.empty()).when(userRepository).findByUsername("ADMIN");
 
             assertThrows(UsernameNotFoundException.class,
-                    () -> userService.loadUserByUsername("ADMIN"));
+                    () -> userService.findByUsername("ADMIN"));
         }
 
         @Test
         public void whenUserIsPresent() {
 
             User testUser = getTestUser();
-            doReturn(Optional.of(testUser)).when(userRepository).findByUsernameEquals("ADMIN");
+            doReturn(Optional.of(testUser)).when(userRepository).findByUsername("ADMIN");
 
-            User userFromService = userService.loadUserByUsername("ADMIN");
+            User userFromService = userService.findByUsername("ADMIN");
 
             assertEquals(testUser, userFromService);
         }
@@ -63,7 +63,7 @@ public class UserServiceTest extends BaseTestWithoutDB {
 
             User testUser = getTestUser();
             doReturn(Optional.of(testUser)).when(userRepository)
-                    .findByUsernameEquals(testUser.getUsername());
+                    .findByUsername(testUser.getUsername());
 
             UserIsAlreadyPresentException exception = assertThrows(
                     UserIsAlreadyPresentException.class, () -> userService.saveUser(testUser));
@@ -77,7 +77,7 @@ public class UserServiceTest extends BaseTestWithoutDB {
     public class TestDeleteUser {
 
         @Test
-        public void whenUserIsPresent() throws UserDoesNotExistsException {
+        public void whenUserIsPresent() {
 
             User testUser = getTestUser();
             doNothing().when(userRepository).deleteById(testUser.getId());
