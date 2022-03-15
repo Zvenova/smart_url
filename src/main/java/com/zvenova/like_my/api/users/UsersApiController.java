@@ -1,5 +1,6 @@
 package com.zvenova.like_my.api.users;
 
+import com.zvenova.like_my.exception.request.FieldInRequestCannotBeEmpty;
 import com.zvenova.like_my.service.mapper.UserMapper;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +12,6 @@ import com.zvenova.like_my.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
-import javax.validation.Valid;
 
 
 @RestController
@@ -26,7 +26,12 @@ public class UsersApiController {
     @PostMapping
     public CreateUserResponse createUser(
             @RequestBody CreateUserRequest request
-    ) throws UserIsAlreadyPresentException {
+    ) throws FieldInRequestCannotBeEmpty, UserIsAlreadyPresentException {
+
+        if (request.getUsername().isEmpty() || request.getPassword().isEmpty()) {
+
+            throw new FieldInRequestCannotBeEmpty("Поле не может быть пустым!");
+        }
 
         User createdUser = userService.saveUser(userMapper.getUserFromCreateUserRequest(request));
         return userMapper.getCreateUserResponse(createdUser);
