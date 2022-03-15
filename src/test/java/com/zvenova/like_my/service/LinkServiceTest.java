@@ -25,22 +25,22 @@ public class LinkServiceTest extends BaseTestWithoutDB {
         public void whenLinkIsPresent() throws LinkDoesNotExistsException {
 
             Link testLink = getTestLink();
-            doReturn(Optional.of(testLink)).when(linkRepository).findByFullLinkEquals(testLink.getFullLink());
+            doReturn(Optional.of(testLink)).when(linkRepository).findByFullLink(testLink.getFullLink());
 
-            Link linkByFullLink = linkService.loadLinkByFullLink(testLink.getFullLink());
+            Link linkByFullLink = linkService.findByFullLink(testLink.getFullLink());
             assertEquals(testLink, linkByFullLink);
-            verify(linkRepository, times(1)).findByFullLinkEquals(testLink.getFullLink());
+            verify(linkRepository, times(1)).findByFullLink(testLink.getFullLink());
         }
 
         @Test
         public void whenLinkNotPresent() {
 
             Link testLink = getTestLink();
-            doReturn(Optional.empty()).when(linkRepository).findByFullLinkEquals(testLink.getFullLink());
+            doReturn(Optional.empty()).when(linkRepository).findByFullLink(testLink.getFullLink());
 
             assertThrows(LinkDoesNotExistsException.class,
-                    () -> linkService.loadLinkByFullLink(testLink.getFullLink()));
-            verify(linkRepository, times(1)).findByFullLinkEquals(testLink.getFullLink());
+                    () -> linkService.findByFullLink(testLink.getFullLink()));
+            verify(linkRepository, times(1)).findByFullLink(testLink.getFullLink());
         }
     }
 
@@ -51,10 +51,10 @@ public class LinkServiceTest extends BaseTestWithoutDB {
         public void whenLinkIsPresent() {
 
             Link testLink = getTestLink();
-            doReturn(Optional.of(testLink)).when(linkRepository).findByFullLinkEquals(testLink.getFullLink());
+            doReturn(Optional.of(testLink)).when(linkRepository).findByFullLink(testLink.getFullLink());
 
             assertThrows(LinkIsAlreadyPresentException.class, () -> linkService.saveLink(testLink));
-            verify(linkRepository, times(1)).findByFullLinkEquals(testLink.getFullLink());
+            verify(linkRepository, times(1)).findByFullLink(testLink.getFullLink());
             verify(linkRepository, times(0)).save(testLink);
         }
 
@@ -68,7 +68,7 @@ public class LinkServiceTest extends BaseTestWithoutDB {
 
             assertEquals(testLink, linkFromDB);
             assertDoesNotThrow(() -> linkService.saveLink(testLink));
-            verify(linkRepository, times(2)).findByFullLinkEquals(testLink.getFullLink());
+            verify(linkRepository, times(2)).findByFullLink(testLink.getFullLink());
             verify(linkRepository, times(2)).save(testLink);
         }
     }
@@ -83,7 +83,7 @@ public class LinkServiceTest extends BaseTestWithoutDB {
             doNothing().when(linkRepository).deleteById(testLink.getId());
             doReturn(true).when(linkRepository).existsById(testLink.getId());
 
-            assertDoesNotThrow(() -> linkService.deleteLink(testLink));
+            assertDoesNotThrow(() -> linkService.deleteLink(testLink.getId()));
             verify(linkRepository, times(1)).deleteById(testLink.getId());
             verify(linkRepository, times(1)).existsById(testLink.getId());
         }
@@ -95,7 +95,7 @@ public class LinkServiceTest extends BaseTestWithoutDB {
             doNothing().when(linkRepository).deleteById(testLink.getId());
             doReturn(false).when(linkRepository).existsById(testLink.getId());
 
-            assertThrows(LinkDoesNotExistsException.class, () -> linkService.deleteLink(testLink));
+            assertThrows(LinkDoesNotExistsException.class, () -> linkService.deleteLink(testLink.getId()));
             verify(linkRepository, times(0)).deleteById(testLink.getId());
             verify(linkRepository, times(1)).existsById(testLink.getId());
         }
@@ -134,27 +134,23 @@ public class LinkServiceTest extends BaseTestWithoutDB {
         public void whenLinkIsPresent() throws LinkDoesNotExistsException {
 
             Link testLink = getTestLink();
-            doReturn(testLink).when(linkRepository).findBySmartLinkEquals(testLink.getSmartLink());
-            doReturn(true).when(linkRepository).existsBySmartLinkEquals(testLink.getSmartLink());
+            doReturn(Optional.of(testLink)).when(linkRepository).findBySmartLink(testLink.getSmartLink());
 
-            Link linkFromDB = linkService.findLinkBySmartLink(testLink);
+            Link linkFromDB = linkService.findBySmartLink(testLink.getSmartLink());
 
             assertEquals(testLink, linkFromDB);
-            assertDoesNotThrow(() -> linkService.findLinkBySmartLink(testLink));
-            verify(linkRepository, times(2)).findBySmartLinkEquals(testLink.getSmartLink());
-            verify(linkRepository, times(2)).existsBySmartLinkEquals(testLink.getSmartLink());
+            assertDoesNotThrow(() -> linkService.findBySmartLink(testLink.getSmartLink()));
+            verify(linkRepository, times(2)).findBySmartLink(testLink.getSmartLink());
         }
 
         @Test
         public void whenLinkNotPresent() {
 
             Link testLink = getTestLink();
-            doReturn(null).when(linkRepository).findBySmartLinkEquals(testLink.getSmartLink());
-            doReturn(false).when(linkRepository).existsBySmartLinkEquals(testLink.getSmartLink());
+            doReturn(Optional.empty()).when(linkRepository).findBySmartLink(testLink.getSmartLink());
 
-            assertThrows(LinkDoesNotExistsException.class, () -> linkService.findLinkBySmartLink(testLink));
-            verify(linkRepository, times(0)).findBySmartLinkEquals(testLink.getSmartLink());
-            verify(linkRepository, times(1)).existsBySmartLinkEquals(testLink.getSmartLink());
+            assertThrows(LinkDoesNotExistsException.class, () -> linkService.findBySmartLink(testLink.getSmartLink()));
+            verify(linkRepository, times(1)).findBySmartLink(testLink.getSmartLink());
         }
     }
 
