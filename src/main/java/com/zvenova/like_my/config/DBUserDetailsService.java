@@ -20,7 +20,7 @@ public class DBUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        return userService.loadUserByUsername(username);
+        return userService.findByUsername(username);
     }
 
 }
