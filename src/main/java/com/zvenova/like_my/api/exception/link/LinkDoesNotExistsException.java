@@ -1,13 +1,14 @@
-package com.zvenova.like_my.exception.link;
+package com.zvenova.like_my.api.exception.link;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+
 @Data
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class LinkIsAlreadyPresentException extends Exception{
+public class LinkDoesNotExistsException extends Exception {
 
     private String error;
 }
