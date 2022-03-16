@@ -1,23 +1,22 @@
 package com.zvenova.like_my.api.users;
 
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import com.zvenova.like_my.api.exception.request.FieldInRequestCannotBeEmpty;
+import com.zvenova.like_my.base.BaseApiTest;
 import com.zvenova.like_my.domain.entity.User;
 import com.zvenova.like_my.domain.security.Role;
-import com.zvenova.like_my.exception.request.FieldInRequestCannotBeEmpty;
+import lombok.SneakyThrows;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
-import com.zvenova.like_my.base.BaseApiTest;
-
-import lombok.SneakyThrows;
-
-import static org.junit.jupiter.api.Assertions.*;
 import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 class UsersApiControllerTest extends BaseApiTest {
