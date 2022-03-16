@@ -1,4 +1,4 @@
-package com.zvenova.like_my.exception.user;
+package com.zvenova.like_my.api.exception.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class UserIsAlreadyPresentException extends Exception {
+public class UserDoesNotExistsException extends Exception {
 
-    private String username;
+    private Long id;
 }
