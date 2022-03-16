@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Profile({ "testWithDB" })
 @Configuration
-@EnableJpaRepositories("com.zvenova.like_my.repository")
+@EnableJpaRepositories("com.zvenova.like_my.domain.repository")
 @EnableTransactionManagement
 public class DatabaseTestConfig {
 

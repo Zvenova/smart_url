@@ -1,6 +1,6 @@
 package com.zvenova.like_my.base;
 
-import com.zvenova.like_my.repository.LinkRepository;
+import com.zvenova.like_my.domain.repository.LinkRepository;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
@@ -13,7 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.zvenova.like_my.repository.UserRepository;
+import com.zvenova.like_my.domain.repository.UserRepository;
 
 @ActiveProfiles("test")
 @SpringBootTest

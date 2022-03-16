@@ -8,7 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.zvenova.like_my.repository.UserRepository;
+import com.zvenova.like_my.domain.repository.UserRepository;
 import com.zvenova.like_my.service.UserService;
 
 @ActiveProfiles({ "test", "testWithDB" })
