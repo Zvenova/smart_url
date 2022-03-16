@@ -1,16 +1,13 @@
-package com.zvenova.like_my.repository;
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.Collections;
-
-import org.junit.jupiter.api.Test;
+package com.zvenova.like_my.domain.repository;
 
 import com.zvenova.like_my.base.BaseTestWithDB;
 import com.zvenova.like_my.domain.entity.User;
 import com.zvenova.like_my.domain.security.Role;
+import org.junit.jupiter.api.Test;
+
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class UserRepositoryTest extends BaseTestWithDB {
 
@@ -37,7 +34,6 @@ class UserRepositoryTest extends BaseTestWithDB {
     private User getTestUser() {
 
         return User.builder().username("Олег").active(true).password("123456")
-                .roles(Collections.singleton(Role.USER)).build();
+                .roles(Set.of(Role.USER)).build();
     }
-
 }

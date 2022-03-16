@@ -2,8 +2,8 @@ package com.zvenova.like_my.service;
 
 import com.zvenova.like_my.base.BaseTestWithoutDB;
 import com.zvenova.like_my.domain.entity.Link;
-import com.zvenova.like_my.exception.link.LinkDoesNotExistsException;
-import com.zvenova.like_my.exception.link.LinkIsAlreadyPresentException;
+import com.zvenova.like_my.api.exception.link.LinkDoesNotExistsException;
+import com.zvenova.like_my.api.exception.link.LinkIsAlreadyPresentException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +59,7 @@ public class LinkServiceTest extends BaseTestWithoutDB {
         }
 
         @Test
-        public void whenLinkNotPresent() throws LinkIsAlreadyPresentException {
+        public void whenLinkNotPresent() throws LinkDoesNotExistsException {
 
             Link testLink = getTestLink();
             doReturn(testLink).when(linkRepository).save(testLink);
