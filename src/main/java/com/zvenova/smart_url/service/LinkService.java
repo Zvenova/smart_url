@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 
 
 @Service
-@Transactional  //TODO
+@Transactional
 @RequiredArgsConstructor
 public class LinkService {
 
@@ -26,6 +26,7 @@ public class LinkService {
 
         if (isLinkPresentByFullLink(linkToSave.getFullLink()))
             return findByFullLink(linkToSave.getFullLink());
+
         return linkRepository.save(linkToSave);
     }
 
