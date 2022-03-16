@@ -1,4 +1,4 @@
-package com.zvenova.like_my.exception.request;
+package com.zvenova.smart_url.api.exception;
 
 
 import lombok.AllArgsConstructor;
