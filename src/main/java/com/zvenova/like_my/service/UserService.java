@@ -2,13 +2,13 @@ package com.zvenova.like_my.service;
 
 import javax.transaction.Transactional;
 
-import com.zvenova.like_my.exception.user.UserDoesNotExistsException;
+import com.zvenova.like_my.api.exception.user.UserDoesNotExistsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.zvenova.like_my.domain.entity.User;
-import com.zvenova.like_my.exception.user.UserIsAlreadyPresentException;
-import com.zvenova.like_my.repository.UserRepository;
+import com.zvenova.like_my.api.exception.user.UserIsAlreadyPresentException;
+import com.zvenova.like_my.domain.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,8 +32,6 @@ public class UserService {
             throw new UserIsAlreadyPresentException(user.getUsername());
         }
 
-
-
        return userRepository.save(user);
     }
 
@@ -44,6 +42,17 @@ public class UserService {
         }
 
         userRepository.deleteById(user.getId());
+    }
+
+    public User updateUser(User userToUpdate) throws UserIsAlreadyPresentException {
+
+
+        if (isUserPresentByUsername(userToUpdate.getUsername())) {
+
+            throw new UserIsAlreadyPresentException(userToUpdate.getUsername());
+        }
+
+        return userRepository.save(userToUpdate);
     }
 
     public User findById(Long id) throws UserDoesNotExistsException {

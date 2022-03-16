@@ -1,9 +1,8 @@
 package com.zvenova.like_my.service;
 
 import com.zvenova.like_my.domain.entity.Link;
-import com.zvenova.like_my.exception.link.LinkDoesNotExistsException;
-import com.zvenova.like_my.exception.link.LinkIsAlreadyPresentException;
-import com.zvenova.like_my.repository.LinkRepository;
+import com.zvenova.like_my.api.exception.link.LinkDoesNotExistsException;
+import com.zvenova.like_my.domain.repository.LinkRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +22,10 @@ public class LinkService {
                 .orElseThrow(() -> new LinkDoesNotExistsException(fullLink));
     }
 
-    public Link saveLink(Link linkToSave) throws LinkIsAlreadyPresentException {
+    public Link saveLink(Link linkToSave) throws LinkDoesNotExistsException {
 
         if (isLinkPresentByFullLink(linkToSave.getFullLink()))
-            throw new LinkIsAlreadyPresentException(linkToSave.getFullLink());
+            return findByFullLink(linkToSave.getFullLink());
         return linkRepository.save(linkToSave);
     }
 
@@ -51,9 +50,14 @@ public class LinkService {
         );
     }
 
-    private boolean isLinkPresentByFullLink(String fullLink) {
+    public boolean isLinkPresentByFullLink(String fullLink) {
 
         return linkRepository.findByFullLink(fullLink).isPresent();
+    }
+
+    public boolean isLinkPresentBySmartLink(String smartLink) {
+
+        return linkRepository.findBySmartLink(smartLink).isPresent();
     }
 
     private boolean isLinkPresentById(Long id) {
