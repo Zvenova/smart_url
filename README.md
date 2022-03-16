@@ -1,1 +1,1 @@
-# like_my
+# Smart url
