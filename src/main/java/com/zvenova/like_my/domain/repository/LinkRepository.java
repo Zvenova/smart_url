@@ -1,4 +1,4 @@
-package com.zvenova.like_my.repository;
+package com.zvenova.like_my.domain.repository;
 
 import com.zvenova.like_my.domain.entity.Link;
 import org.springframework.data.jpa.repository.JpaRepository;

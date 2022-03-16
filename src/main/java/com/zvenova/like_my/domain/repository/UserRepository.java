@@ -1,4 +1,4 @@
-package com.zvenova.like_my.repository;
+package com.zvenova.like_my.domain.repository;
 
 import java.util.Optional;
 
