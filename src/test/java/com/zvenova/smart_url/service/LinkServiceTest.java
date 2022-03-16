@@ -48,14 +48,21 @@ public class LinkServiceTest extends BaseTestWithoutDB {
     public class TestSaveLink {
 
         @Test
-        public void whenLinkIsPresent() {
+        public void whenLinkIsPresent() throws LinkDoesNotExistsException {
 
-            Link testLink = getTestLink();
-            doReturn(Optional.of(testLink)).when(linkRepository).findByFullLink(testLink.getFullLink());
+            Link linkToSave = getTestLink();
+            Link presentLink = new Link();
+            presentLink.setFullLink(linkToSave.getFullLink());
+            presentLink.setSmartLink("SomeSmartLink");
+            doReturn(Optional.of(presentLink)).when(linkRepository).findByFullLink(linkToSave.getFullLink());
 
-            assertThrows(LinkIsAlreadyPresentException.class, () -> linkService.saveLink(testLink));
-            verify(linkRepository, times(1)).findByFullLink(testLink.getFullLink());
-            verify(linkRepository, times(0)).save(testLink);
+            Link responseLink = linkService.saveLink(linkToSave);
+
+            assertEquals(linkToSave.getFullLink(), responseLink.getFullLink());
+            assertNotEquals(linkToSave.getSmartLink(), responseLink.getSmartLink());
+
+            verify(linkRepository, times(2)).findByFullLink(linkToSave.getFullLink());
+            verify(linkRepository, times(0)).save(linkToSave);
         }
 
         @Test
