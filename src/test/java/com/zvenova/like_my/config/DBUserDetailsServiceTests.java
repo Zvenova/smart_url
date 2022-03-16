@@ -1,9 +1,9 @@
 package com.zvenova.like_my.config;
 
 import java.util.Collections;
-import java.util.Optional;
 
-import com.zvenova.like_my.exception.user.UserIsAlreadyPresentException;
+import com.zvenova.like_my.api.exception.request.FieldInRequestCannotBeEmpty;
+import com.zvenova.like_my.api.exception.user.UserIsAlreadyPresentException;
 import com.zvenova.like_my.service.UserService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Nested;
@@ -33,7 +33,7 @@ public class DBUserDetailsServiceTests extends BaseTestWithoutDB {
     public class TestLoadUserByUsername {
 
         @Test
-        public void loadUserByUsernameIsPresent() throws UserIsAlreadyPresentException {
+        public void loadUserByUsernameIsPresent() throws UserIsAlreadyPresentException, FieldInRequestCannotBeEmpty {
 
             User testUser = getTestUser();
 
